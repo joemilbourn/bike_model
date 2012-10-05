@@ -36,19 +36,21 @@ def force (chap):
         return chap.mass * G * sin(slope)
 
 def steady_state (chap, npts=10, eps=0.0001):
-    if len(chap.v) < npts: return False
-    else: return mean(abs(diff(chap.v[-npts:]))) < eps
+    if type(chap) == list:
+        return all(steady_state(chap, npts, eps) for chap in chaps)
+    elif len(chap.v) < npts:
+        return False
+    else:
+        return mean(abs(diff(chap.v[-npts:]))) < eps
 
-for iteration in xrange(10000):
+while not steady_state(chaps):
     for chap in chaps:
         chap.v += [chap.v[-1] + tor * ((force(chap) - drag(chap))/chap.mass)]
-    if all(steady_state(chap) for chap in chaps):
-    	break
 
 t = [tor * i for i in range(len(chaps[0].v))]
 
 for chap in chaps:
-	plot(t, chap.v, label=str(chap))
+    plot(t, chap.v, label=str(chap))
 
 legend(loc='best')
 xlabel('Time (s)')
