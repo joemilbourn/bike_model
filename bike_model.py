@@ -1,7 +1,7 @@
 from math import sin
-from numpy import deg2rad, mean, diff, abs
+from numpy import deg2rad, mean, diff, abs, rad2deg
 from collections import namedtuple
-from pylab import plot, legend, xlabel, ylabel, show
+from pylab import plot, legend, xlabel, ylabel, show, title, grid
 
 class Chap:
     def __init__ (self, name, mass, width, height, initial_v=0):
@@ -15,9 +15,9 @@ class Chap:
         return self.name
 
 ##People
-chaps = [Chap("David", 85.7, 0.7, 2),
-         Chap("Joe", 90, 0.65, 2), 
-         Chap("James", 120, 1, 2)]
+chaps = [Chap("Brendan", 75, 0.7, 1.5),
+	 Chap("Ben", 120, 0.7, 1.5),
+	 Chap("Joe", 80, 0.7, 1.5)]
 
 ## Constants
 tor = 0.1 #s
@@ -51,8 +51,9 @@ t = [tor * i for i in range(len(chaps[0].v))]
 
 for chap in chaps:
     plot(t, chap.v, label=str(chap))
-
+title('Freewheeling, on a %d degree slope' % rad2deg(slope))
 legend(loc='best')
 xlabel('Time (s)')
 ylabel('Speed (m/s)')
+grid()
 show()
